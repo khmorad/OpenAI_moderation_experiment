@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-
+import './App.css';
 const ModerationComponent = () => {
   const [text, setText] = useState('');
   const [results, setResults] = useState(null);
 
 
-  //just used to get the text from the input box
   const handleInputChange = (e) => {
     setText(e.target.value);
+    const newHeight = e.target.scrollHeight > 30 ? '90px' : '30px'; // Adjust the heights as needed
+    e.target.style.height = newHeight;
   };
-
 
 //this is the function that calls the api when "Check Moderation" is clicked
   const handleSubmit = async (e) => {
@@ -20,7 +20,7 @@ const ModerationComponent = () => {
       //please change the api key haha
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer API_KEY_HERE'
+        'Authorization': 'Bearer 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'
       },
       body: JSON.stringify({ input: text })
     });
@@ -49,18 +49,25 @@ const ModerationComponent = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <textarea value={text} onChange={handleInputChange} />
-        <button type="submit">Check Moderation</button>
-      </form>
+      <div className="searchbox">
+        <form onSubmit={handleSubmit}>
+          <textarea className='userInput' placeholder="write a sentence for program to detect" value={text} onChange={handleInputChange}  />
+          <button type="submit" className='submit-btn'>Check Moderation</button>
+        </form>
+      </div>
 
       {results && (
         <div>
-          <h2>Results:</h2>
-           {/*render the JSON as string format*/}
-          <pre>{JSON.stringify(results, null, 2)}</pre>
-          <h3>Moderation Message:</h3>
-          <p>{getCategoryMessage()}</p>
+          <div>
+            <h2>Results:</h2>
+            <h3>Moderation Message:</h3>
+            <p>{getCategoryMessage()}</p>
+              <div className="reder_result">
+                {/*render the JSON as string format*/}
+                <pre>{JSON.stringify(results, null, 2)}</pre>
+              </div>
+            
+          </div>
         </div>
       )}
     </div>
